@@ -331,11 +331,34 @@ template <class _T> struct Vector
         resize(size() + p_delta_size, ctx);
     };
 
+    func_ttt(insert_at, *p_element, p_index, ctx)
+    {
+        resize_delta(1, ctx);
+        let l_old_size = _size;
+        _size += 1;
+        _span._slice.memove_down(p_index, 1, l_old_size - p_index);
+        *at(p_index) = *p_element;
+    };
+
+    func_ttt(insert_slice_at, *p_slice, p_index, ctx)
+    {
+        resize_delta(p_slice->size(), ctx);
+        let l_old_size = _size;
+        _size += p_slice->size();
+        _span._slice.memove_down(p_index, p_slice->size(), l_old_size - p_index);
+        _span._slice.copy_at_from(p_index, p_slice);
+    };
+
     func_tt(push_back, p_element, ctx)
     {
         resize_delta(1, ctx);
         _size += 1;
         *_span.at(_size - 1) = *p_element;
+    };
+
+    func_tt(push_back_slice, p_slice, ctx)
+    {
+        insert_slice_at(p_slice, _size, ctx);
     };
 
     func_t(remove, p_index)

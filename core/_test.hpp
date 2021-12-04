@@ -170,21 +170,21 @@ func_t(test_slice, ctx)
     }
 };
 
-func_tt(__test_any_vector, p_vector, ctx)
+func_tt(__test_any_vector, *p_vector, ctx)
 {
 #if 0
 #endif
     // vector_push_back_array
     {
-        let l_old_size = p_vector.size();
+        let l_old_size = p_vector->size();
         arr<uimax, 5> _elements = {0, 1, 2, 3, 4};
         let l_elements_slice = _elements.to_slice();
 
-        p_vector.push_back_slice(&l_elements_slice, ctx);
-        assert(p_vector.size() == l_old_size + 5);
-        for (loop_iter(i, &p_vector))
+        p_vector->push_back_slice(&l_elements_slice, ctx);
+        assert(p_vector->size() == l_old_size + 5);
+        for (loop_iter(i, p_vector))
         {
-            assert(*p_vector.at(i) == *_elements.at(i - l_old_size));
+            assert(*p_vector->at(i) == *_elements.at(i - l_old_size));
         }
     }
 };
@@ -192,7 +192,7 @@ func_tt(__test_any_vector, p_vector, ctx)
 func_t(test_vector, ctx)
 {
     let l_vector = Vector<uimax>::allocate_s(0, ctx);
-    __test_any_vector(l_vector, ctx);
+    __test_any_vector(&l_vector, ctx);
     l_vector.free(ctx);
 };
 
