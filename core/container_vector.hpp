@@ -3,6 +3,7 @@
 #include "macros.hpp"
 #include "types.hpp"
 #include "memory_unsafe.hpp"
+#include "numerics.hpp"
 
 template <class _T> struct Slice
 {

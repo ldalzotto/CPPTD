@@ -25,3 +25,4 @@ endif ()
 
 
 add_executable(CPPTD ./main.cpp)
+target_include_directories(CPPTD PUBLIC ./)
