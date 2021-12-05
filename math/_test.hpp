@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fixed.hpp"
+#include "fixed_trig.hpp"
 
 namespace math_test
 {

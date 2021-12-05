@@ -2,11 +2,11 @@
 
 #include <core/core.hpp>
 
-// TODO -> having a constexpr function that get the level 1 higher number type to cast
 template <i8 _WholePrecision, i8 _FractionalPrecision, class _Num> struct fixed
 {
     static_assert((_WholePrecision + _FractionalPrecision) == sizeof(_Num) * 8);
 
+    using type_higher_numeric = typename _Num::type_higher_numeric;
     _Num _number;
 
     func_s_(constexpr __force_inline scale)
@@ -60,14 +60,14 @@ template <i8 _WholePrecision, i8 _FractionalPrecision, class _Num> struct fixed
     func_t(operator*, p_other)
     {
         __check_scale_match(*this, p_other);
-        return fixed{*(num<i64>(*num_value()) * num<i64>(*p_other.num_value())).num_value() >> scale()};
+        return fixed{*(num<type_higher_numeric>(*num_value()) * num<type_higher_numeric>(*p_other.num_value())).num_value() >> scale()};
         // return fixed{num<_Num>(num<uimax>(_number._number) * num(p_other._number._number >> scale()))};
     };
 
     func_t(operator/, p_other)
     {
         __check_scale_match(*this, p_other);
-        return fixed{num(((i64)*num_value()) << scale()) / p_other._number};
+        return fixed{num(((type_higher_numeric)*num_value()) << scale()) / p_other._number};
         // return fixed{(_Num)(((uimax)_number << scale()) / p_other._number)};
     };
 

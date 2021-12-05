@@ -53,9 +53,34 @@ declare_is_floating(f64);
 
 #undef declare_is_floating
 
+template <class _T0> struct higher_numeric
+{
+};
+
+#define declare_higher_numeric(p_source, p_target)                                                                                                                                                     \
+    template <> struct higher_numeric<p_source>                                                                                                                                                        \
+    {                                                                                                                                                                                                  \
+        using value = p_target;                                                                                                                                                                        \
+    }
+
+declare_higher_numeric(i8, i16);
+declare_higher_numeric(i16, i32);
+declare_higher_numeric(i32, i64);
+declare_higher_numeric(i64, i64);
+declare_higher_numeric(ui8, ui16);
+declare_higher_numeric(ui16, ui32);
+declare_higher_numeric(ui32, ui64);
+declare_higher_numeric(ui64, ui64);
+declare_higher_numeric(f32, f64);
+declare_higher_numeric(f64, f64);
+
+#undef declare_higher_numeric
+
 template <class _Number> struct Number
 {
     static_assert(is_numeric<_Number>::value, "");
+    using type_higher_numeric = typename higher_numeric<_Number>::value;
+    using type_higher = Number<type_higher_numeric>;
 
     _Number _number;
 
