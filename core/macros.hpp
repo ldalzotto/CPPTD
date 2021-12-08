@@ -36,6 +36,7 @@
 #define func_w_ttt(p_name, p_0, p_1, p_2) func_wto_ttt(p_name, thiz, p_0, p_1, p_2)
 
 #define func_h_(p_name) template <class _P0> auto p_name()
+#define func_s_h_(p_name) template <class _P0> static auto p_name()
 
 #define loop_iter_begin(index_var_name, p_begin, p_container_var_name)                                                                                                                                 \
     let(index_var_name) = (p_begin);                                                                                                                                                                   \

@@ -2,6 +2,7 @@
 
 #include "fixed.hpp"
 #include "fixed_trig.hpp"
+#include <math.h>
 
 namespace math_test
 {
@@ -51,10 +52,35 @@ func_h_(fixed_operation_test)
     }
 };
 
+func_(fixed_cos_test)
+{
+    let l_start = -6.28318530718;
+    let l_end = 6.28318530718;
+    let l_step_count = 320;
+    let l_delta = (l_end - l_start) / l_step_count;
+
+    let l_current_step = 0;
+    while (l_current_step < l_step_count)
+    {
+        let l_current_value = l_start + (l_delta * l_current_step);
+        let l_angle = fangle32{fixed<7, Int32>::make_s(num(l_current_value))};
+        let l_cos = *trig::cos(l_angle).thiz.to_f64().num_value();
+        assert(abs(l_cos - cos(l_current_value)) <= 0.025); // Having a better accuracy ?
+        l_current_step += 1;
+    }
+    /*
+    // TODO -> do the same for multiple values
+    let l_angle = fangle32{fixed<7, Int32>::make_s(num(1.00))};
+    let l_cos = trig::cos(fangle32{fixed<7, Int32>::make_s(num(1.00))});
+    assert(abs(*l_cos.thiz.to_f64().num_value() - cos(1.0f)) <= 0.01);
+    */
+};
+
 void main()
 {
-    fixed_operation_test<fixed<16, 16, Int32>>();
-    fixed_operation_test<fixed<8, 24, Int32>>();
+    fixed_operation_test<fixed<16, Int32>>();
+    fixed_operation_test<fixed<24, Int32>>();
+    fixed_cos_test();
 };
 
 }; // namespace math_test

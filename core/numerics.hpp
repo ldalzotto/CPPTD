@@ -147,6 +147,44 @@ template <class _Number> struct Number
         _number /= p_other._number;
     }
 
+    func_t(constexpr __force_inline operator%, p_other)
+    {
+        using __type_return = decltype(__get_modulus_return_type(*this, p_other));
+        return __type_return(_number % p_other._number);
+    }
+
+    func_t(constexpr __force_inline operator<, p_other)
+    {
+        return (i8)(_number < p_other._number);
+    };
+
+    func_t(constexpr __force_inline operator<=, p_other)
+    {
+        return (i8)(_number <= p_other._number);
+    };
+
+    func_t(constexpr __force_inline operator>, p_other)
+    {
+        return (i8)(_number > p_other._number);
+    };
+
+    func_t(constexpr __force_inline operator>=, p_other)
+    {
+        return (i8)(_number >= p_other._number);
+    };
+
+    func_(constexpr __force_inline abs)
+    {
+        if (*this < Number(0))
+        {
+            return *this * Number(-1);
+        }
+        else
+        {
+            return *this;
+        }
+    };
+
   private:
     func_s_tt(constexpr __force_inline __get_operation_return_type, p_0, p_1)
     {
@@ -183,9 +221,18 @@ template <class _Number> struct Number
             return p_1;
         }
     };
+
+    func_s_tt(constexpr __force_inline __get_modulus_return_type, p_0, p_1)
+    {
+        abort();
+
+        assert_constexpr<!is_floating<_P0>::value && !is_floating<_P1>::value>();
+        // static_assert(!is_floating<_P0>::value && !is_floating<_P1>::value);
+        return p_0;
+    };
 };
 
-template <class _P0> auto num(_P0 p_input)
+template <class _P0> auto __force_inline constexpr num(_P0 p_input)
 {
     return Number<_P0>(p_input);
 };
