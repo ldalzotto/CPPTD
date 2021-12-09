@@ -66,6 +66,8 @@ func_(fixed_cos_test_accuracy)
     }
 }
 
+// TODO -> Having a way to quickly test compare ?
+
 // Ensuring that cos matches real value
 func_(fixed_cos_test)
 {
@@ -86,9 +88,122 @@ func_(fixed_cos_test)
         let l_current_value_double = l_start_double + (l_delta_double * l_current_step);
         let l_cos = *trig::cos(l_current_value).to_f64().num_value();
         let l_real_cos = ::cos(*l_current_value_double.num_value());
-        assert(abs(l_cos - l_real_cos) <= 0.05);
+        assert(abs(abs(l_cos) - abs(l_real_cos)) <= 0.05);
         l_current_step += num(1);
     }
+};
+
+func_(fixed_tan_test)
+{
+#if 0
+#endif
+    // very precise between -1 and 1
+    {
+        let l_step_count = num(320);
+        let l_start = fangle32::make_s(num(-1));
+        let l_end = fangle32::make_s(num(1));
+        let l_delta = (l_end - l_start) / fangle32::make_s(l_step_count);
+
+        let l_start_double = num(-1);
+        let l_end_double = num(1);
+
+        // TODO -> make number div to float
+        let l_delta_double = (l_end_double - l_start_double) / l_step_count;
+
+        let l_current_step = num(0);
+        while (l_current_step < l_step_count)
+        {
+            let l_current_value = l_start + (l_delta * fangle32::make_s(l_current_step));
+            let l_current_value_double = l_start_double + (l_delta_double * l_current_step);
+
+            let l_cos = *trig::tan(l_current_value).to_f64().num_value();
+            let l_real_cos = ::tan(*l_current_value_double.num_value());
+            assert(abs(abs(l_cos) - abs(l_real_cos)) <= 0.05);
+            l_current_step += num(1);
+        }
+    }
+    // less precise between -1.4 and 1.4
+    {
+        let l_step_count = num(320);
+        let l_start = fangle32::make_s(num(-1.4));
+        let l_end = fangle32::make_s(num(1.4));
+        let l_delta = (l_end - l_start) / fangle32::make_s(l_step_count);
+
+        let l_start_double = num(-1.4);
+        let l_end_double = num(1.4);
+        // TODO -> make number div to float
+        let l_delta_double = (l_end_double - l_start_double) / l_step_count;
+
+        let l_current_step = num(0);
+        while (l_current_step < l_step_count)
+        {
+            let l_current_value = l_start + (l_delta * fangle32::make_s(l_current_step));
+            let l_current_value_double = l_start_double + (l_delta_double * l_current_step);
+
+            let l_cos = *trig::tan(l_current_value).to_f64().num_value();
+            let l_real_cos = ::tan(*l_current_value_double.num_value());
+            assert(abs(abs(l_cos) - abs(l_real_cos)) <= 4.4); // TODO -> having better acuracy on the tan out of -1,1 ?
+            l_current_step += num(1);
+        }
+    }
+};
+
+// TODO -> write test
+func_(fixed_atan2_test)
+{
+    using type_tan = ftan32;
+    let l_step_count = num(320);
+    {
+        let l_start_x = type_tan::make_s(num(-1));
+        let l_end_x = type_tan::make_s(num(1));
+        let l_delta_x = (l_end_x - l_start_x) / type_tan::make_s(l_step_count);
+
+        let l_start_double_x = num(-1);
+        let l_end_double_x = num(1);
+        // TODO -> make number div to float
+        let l_delta_double_x = (l_end_double_x - l_start_double_x) / l_step_count;
+
+        let l_current_step_x = num(0);
+        while (l_current_step_x < l_step_count)
+        {
+            let l_current_value_x = l_start_x + (l_delta_x * type_tan::make_s(l_current_step_x));
+            let l_current_value_double_x = l_start_double_x + (l_delta_double_x * l_current_step_x);
+
+            {
+                let l_start_y = type_tan::make_s(num(-1));
+                let l_end_y = type_tan::make_s(num(1));
+                let l_delta_y = (l_end_y - l_start_y) / type_tan::make_s(l_step_count);
+
+                let l_start_double_y = num(-1);
+                let l_end_double_y = num(1);
+                // TODO -> make number div to float
+                let l_delta_double_y = (l_end_double_y - l_start_double_y) / l_step_count;
+
+                let l_current_step_y = num(0);
+                while (l_current_step_y < l_step_count)
+                {
+                    let l_current_value_y = l_start_y + (l_delta_y * type_tan::make_s(l_current_step_y));
+                    let l_current_value_double_y = l_start_double_y + (l_delta_double_y * l_current_step_y);
+
+                    let l_cos = *trig::atan2(l_current_value_x, l_current_value_y).to_f64().num_value();
+                    let l_real_cos = ::atan2(*l_current_value_double_x.num_value(), *l_current_value_double_y.num_value());
+                    assert(abs(abs(l_cos) - abs(l_real_cos)) <= 0.3);
+
+                    l_current_step_y += num(1);
+                }
+            }
+
+            l_current_step_x += num(1);
+        }
+    }
+
+    /*
+        let l_x = ftan32::make_s(num(1.0));
+        let l_y = ftan32::make_s(num(2.0));
+        let l_value = trig::atan2(l_x, l_y);
+        let l_vvalue = *l_value.to_f64().num_value();
+        let zefef = 10;
+        */
 };
 
 void main()
@@ -97,6 +212,8 @@ void main()
     fixed_operation_test<fixed<24, Int32>>();
     fixed_cos_test();
     fixed_cos_test_accuracy();
+    fixed_tan_test();
+    fixed_atan2_test();
 };
 
 }; // namespace math_test

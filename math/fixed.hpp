@@ -119,6 +119,12 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
         return _number == p_other._number;
     };
 
+    func_t(constexpr __force_inline operator!=, p_other)
+    {
+        __check_scale_match(*this, p_other);
+        return _number != p_other._number;
+    };
+
     func_t(constexpr __force_inline operator%, p_other)
     {
         __check_scale_match(*this, p_other);
@@ -202,12 +208,19 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
     auto constexpr __force_inline operator==(otherTypeName p_other)                                                                                                                                    \
     {                                                                                                                                                                                                  \
         return thiz == p_other.thiz;                                                                                                                                                                   \
+    };                                                                                                                                                                                                 \
+    auto constexpr __force_inline operator!=(otherTypeName p_other)                                                                                                                                    \
+    {                                                                                                                                                                                                  \
+        return thiz != p_other.thiz;                                                                                                                                                                   \
     };
 
-#define fixed_make(thisTypeName, otherTypeName)                                                                                                                                                        \
-    func_s_t(constexpr __force_inline make_##otherTypeName##_s, p_other)                                                                                                                               \
+template <class _From, class _To> _To fixed_convert_s(_From p_from);
+
+#define fixed_make(fromTypeName, toTypeName)                                                                                                                                                           \
+                                                                                                                                                                                                       \
+    template <> constexpr __force_inline toTypeName fixed_convert_s<fromTypeName, toTypeName>(fromTypeName p_other)                                                                                    \
     {                                                                                                                                                                                                  \
-        return thisTypeName{p_other.thiz.template set_scale<_SCALE>()};                                                                                                                                \
+        return toTypeName{p_other.thiz.template set_scale<toTypeName::_SCALE>()};                                                                                                                      \
     }
 
 #define fixed_declare(name, _Scale, _NumberType)                                                                                                                                                       \

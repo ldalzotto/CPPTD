@@ -138,6 +138,7 @@ template <class _Number> struct Number
 
     func_t(constexpr __force_inline operator/, p_other)
     {
+        // TOOD -> having a better way to define div number return
         using __type_return = decltype(__get_operation_return_type(*this, p_other));
         return __type_return(_number / p_other._number);
     }
@@ -176,6 +177,11 @@ template <class _Number> struct Number
     func_t(constexpr __force_inline operator==, p_other)
     {
         return (i8)(_number == p_other._number);
+    };
+
+    func_t(constexpr __force_inline operator!=, p_other)
+    {
+        return (i8)(_number != p_other._number);
     };
 
     func_(constexpr __force_inline abs)
