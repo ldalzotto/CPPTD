@@ -52,28 +52,43 @@ func_h_(fixed_operation_test)
     }
 };
 
+// Ensuring that cos doesn't loss precision
+func_(fixed_cos_test_accuracy)
+{
+    let l_step_count = 200;
+    let l_angle = fangle32::make_s(num(-94.274513));
+    let l_reference = trig::cos(l_angle);
+    for (loop_range(i, 0, l_step_count))
+    {
+        let l_new_angle = l_angle + (fangle32::m_2_pi() * fangle32::make_s(num(i)));
+        let l_result = trig::cos(l_new_angle);
+        assert(l_reference == l_result);
+    }
+}
+
+// Ensuring that cos matches real value
 func_(fixed_cos_test)
 {
-    let l_start = -6.28318530718;
-    let l_end = 6.28318530718;
-    let l_step_count = 320;
-    let l_delta = (l_end - l_start) / l_step_count;
+    let l_start = fangle32::m_2_pi() * fangle32::make_s(num(-1 * 10));
+    let l_end = fangle32::m_2_pi() * fangle32::make_s(num(10));
+    let l_step_count = num(320);
 
-    let l_current_step = 0;
+    let l_start_double = num(-6.28318530718 * 10);
+    let l_end_double = num(6.28318530718 * 10);
+    let l_delta_double = (l_end_double - l_start_double) / l_step_count;
+
+    let l_delta = (l_end - l_start) / fangle32::make_s(l_step_count);
+
+    let l_current_step = num(0);
     while (l_current_step < l_step_count)
     {
-        let l_current_value = l_start + (l_delta * l_current_step);
-        let l_angle = fangle32{fixed<7, Int32>::make_s(num(l_current_value))};
-        let l_cos = *trig::cos(l_angle).thiz.to_f64().num_value();
-        assert(abs(l_cos - cos(l_current_value)) <= 0.025); // Having a better accuracy ?
-        l_current_step += 1;
+        let l_current_value = l_start + (l_delta * fangle32::make_s(l_current_step));
+        let l_current_value_double = l_start_double + (l_delta_double * l_current_step);
+        let l_cos = *trig::cos(l_current_value).to_f64().num_value();
+        let l_real_cos = ::cos(*l_current_value_double.num_value());
+        assert(abs(l_cos - l_real_cos) <= 0.05);
+        l_current_step += num(1);
     }
-    /*
-    // TODO -> do the same for multiple values
-    let l_angle = fangle32{fixed<7, Int32>::make_s(num(1.00))};
-    let l_cos = trig::cos(fangle32{fixed<7, Int32>::make_s(num(1.00))});
-    assert(abs(*l_cos.thiz.to_f64().num_value() - cos(1.0f)) <= 0.01);
-    */
 };
 
 void main()
@@ -81,6 +96,7 @@ void main()
     fixed_operation_test<fixed<16, Int32>>();
     fixed_operation_test<fixed<24, Int32>>();
     fixed_cos_test();
+    fixed_cos_test_accuracy();
 };
 
 }; // namespace math_test

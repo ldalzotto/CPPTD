@@ -113,6 +113,12 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
         return _number >= p_other._number;
     };
 
+    func_t(constexpr __force_inline operator==, p_other)
+    {
+        __check_scale_match(*this, p_other);
+        return _number == p_other._number;
+    };
+
     func_t(constexpr __force_inline operator%, p_other)
     {
         __check_scale_match(*this, p_other);
@@ -122,6 +128,26 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
     func_(constexpr __force_inline abs)
     {
         return _number.abs();
+    };
+
+    func_s_(constexpr __force_inline m_pi_4)
+    {
+        return make_s(num(0.785398163397448309616));
+    };
+
+    func_s_(constexpr __force_inline m_pi_2)
+    {
+        return m_pi_4() * make_s(num(2.0));
+    };
+
+    func_s_(constexpr __force_inline m_pi)
+    {
+        return m_pi_4() * make_s(num(4.0));
+    };
+
+    func_s_(constexpr __force_inline m_2_pi)
+    {
+        return m_pi_4() * make_s(num(8.0));
     };
 
   private:
@@ -172,6 +198,10 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
     auto constexpr __force_inline operator>=(otherTypeName p_other)                                                                                                                                    \
     {                                                                                                                                                                                                  \
         return thiz >= p_other.thiz;                                                                                                                                                                   \
+    };                                                                                                                                                                                                 \
+    auto constexpr __force_inline operator==(otherTypeName p_other)                                                                                                                                    \
+    {                                                                                                                                                                                                  \
+        return thiz == p_other.thiz;                                                                                                                                                                   \
     };
 
 #define fixed_make(thisTypeName, otherTypeName)                                                                                                                                                        \
@@ -190,9 +220,29 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
         {                                                                                                                                                                                              \
             return name{type_fixed::make_s(p_number)};                                                                                                                                                 \
         };                                                                                                                                                                                             \
+        func_s_(constexpr __force_inline m_pi_4)                                                                                                                                                       \
+        {                                                                                                                                                                                              \
+            return name{type_fixed::m_pi_4()};                                                                                                                                                         \
+        };                                                                                                                                                                                             \
+        func_s_(constexpr __force_inline m_pi_2)                                                                                                                                                       \
+        {                                                                                                                                                                                              \
+            return name{type_fixed::m_pi_2()};                                                                                                                                                         \
+        };                                                                                                                                                                                             \
+        func_s_(constexpr __force_inline m_pi)                                                                                                                                                         \
+        {                                                                                                                                                                                              \
+            return name{type_fixed::m_pi()};                                                                                                                                                           \
+        };                                                                                                                                                                                             \
+        func_s_(constexpr m_2_pi)                                                                                                                                                                      \
+        {                                                                                                                                                                                              \
+            return name{type_fixed::m_2_pi()};                                                                                                                                                         \
+        };                                                                                                                                                                                             \
         func_(constexpr __force_inline abs)                                                                                                                                                            \
         {                                                                                                                                                                                              \
             return name{thiz.abs()};                                                                                                                                                                   \
+        };                                                                                                                                                                                             \
+        func_(constexpr __force_inline to_f64)                                                                                                                                                         \
+        {                                                                                                                                                                                              \
+            return thiz.to_f64();                                                                                                                                                                      \
         };                                                                                                                                                                                             \
         fixed_override(name, name)
 

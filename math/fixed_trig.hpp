@@ -36,9 +36,9 @@ auto cos(fangle32 p_angle)
 {
     using type_angle = decltype(p_angle);
     // TODO -> Having PI macros
-    let l_pi = type_angle::make_s(num(3.141592));
-    let l_2pi = type_angle::make_s(num(3.141592 * 2));
-    let l_pi_over_2 = type_angle::make_s(num(3.141592 / 2));
+    let l_pi = type_angle::m_pi();
+    let l_2pi = type_angle::m_2_pi();
+    let l_pi_over_2 = type_angle::m_pi_2();
     let l_angle = (p_angle % l_2pi).abs();
 
     // TODO -> move this to delta ?

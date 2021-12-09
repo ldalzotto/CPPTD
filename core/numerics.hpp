@@ -173,6 +173,11 @@ template <class _Number> struct Number
         return (i8)(_number >= p_other._number);
     };
 
+    func_t(constexpr __force_inline operator==, p_other)
+    {
+        return (i8)(_number == p_other._number);
+    };
+
     func_(constexpr __force_inline abs)
     {
         if (*this < Number(0))
