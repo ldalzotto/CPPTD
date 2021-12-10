@@ -85,7 +85,8 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
     func_t(constexpr __force_inline operator/, p_other)
     {
         __check_scale_match(*this, p_other);
-        return fixed{num(((type_higher_numeric)*num_value()) << scale()) / p_other._number};
+        return fixed{_Num((*num<type_higher_numeric>(*num_value()).num_value() << scale()) / *p_other.num_value())};
+        // return fixed{num(((type_higher_numeric)*num_value()) << scale()) / p_other._number};
         // return fixed{(_Num)(((uimax)_number << scale()) / p_other._number)};
     };
 

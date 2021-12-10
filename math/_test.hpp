@@ -99,7 +99,7 @@ func_(fixed_tan_test)
 #endif
     // very precise between -1 and 1
     {
-        let l_step_count = num(320);
+        let l_step_count = num(32);
         let l_start = fangle32::make_s(num(-1));
         let l_end = fangle32::make_s(num(1));
         let l_delta = (l_end - l_start) / fangle32::make_s(l_step_count);
@@ -107,7 +107,6 @@ func_(fixed_tan_test)
         let l_start_double = num(-1);
         let l_end_double = num(1);
 
-        // TODO -> make number div to float
         let l_delta_double = (l_end_double - l_start_double) / l_step_count;
 
         let l_current_step = num(0);
@@ -118,20 +117,21 @@ func_(fixed_tan_test)
 
             let l_cos = *trig::tan(l_current_value).to_f64().num_value();
             let l_real_cos = ::tan(*l_current_value_double.num_value());
-            assert(abs(abs(l_cos) - abs(l_real_cos)) <= 0.05);
+            let l_diff = abs(abs(l_cos) - abs(l_real_cos));
+            assert(l_diff <= 0.15);
             l_current_step += num(1);
         }
     }
     // less precise between -1.4 and 1.4
     {
-        let l_step_count = num(320);
+        let l_step_count = num(32);
         let l_start = fangle32::make_s(num(-1.4));
         let l_end = fangle32::make_s(num(1.4));
         let l_delta = (l_end - l_start) / fangle32::make_s(l_step_count);
 
         let l_start_double = num(-1.4);
         let l_end_double = num(1.4);
-        // TODO -> make number div to float
+
         let l_delta_double = (l_end_double - l_start_double) / l_step_count;
 
         let l_current_step = num(0);
@@ -160,13 +160,13 @@ func_(fixed_atan2_test)
 
         let l_start_double_x = num(-1);
         let l_end_double_x = num(1);
-        // TODO -> make number div to float
         let l_delta_double_x = (l_end_double_x - l_start_double_x) / l_step_count;
 
         let l_current_step_x = num(0);
         while (l_current_step_x < l_step_count)
         {
             let l_current_value_x = l_start_x + (l_delta_x * type_tan::make_s(l_current_step_x));
+            // TODO -> there is a problem here
             let l_current_value_double_x = l_start_double_x + (l_delta_double_x * l_current_step_x);
 
             {
@@ -176,13 +176,13 @@ func_(fixed_atan2_test)
 
                 let l_start_double_y = num(-1);
                 let l_end_double_y = num(1);
-                // TODO -> make number div to float
                 let l_delta_double_y = (l_end_double_y - l_start_double_y) / l_step_count;
 
                 let l_current_step_y = num(0);
                 while (l_current_step_y < l_step_count)
                 {
                     let l_current_value_y = l_start_y + (l_delta_y * type_tan::make_s(l_current_step_y));
+                    // TODO -> there is a problem here
                     let l_current_value_double_y = l_start_double_y + (l_delta_double_y * l_current_step_y);
 
                     let l_cos = *trig::atan2(l_current_value_x, l_current_value_y).to_f64().num_value();
@@ -208,6 +208,9 @@ func_(fixed_atan2_test)
 
 void main()
 {
+    let l_x = num(1);
+    let l_y = num(2);
+    let l_value = l_x / l_y;
     fixed_operation_test<fixed<16, Int32>>();
     fixed_operation_test<fixed<24, Int32>>();
     fixed_cos_test();
