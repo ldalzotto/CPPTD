@@ -157,6 +157,7 @@ func_(fixed_atan2_test)
         let l_start_x = type_tan::make_s(num(-1));
         let l_end_x = type_tan::make_s(num(1));
         let l_delta_x = (l_end_x - l_start_x) / type_tan::make_s(l_step_count);
+        assert(l_delta_x != type_tan::make_s(num(0)));
 
         let l_start_double_x = num(-1);
         let l_end_double_x = num(1);
@@ -173,6 +174,7 @@ func_(fixed_atan2_test)
                 let l_start_y = type_tan::make_s(num(-1));
                 let l_end_y = type_tan::make_s(num(1));
                 let l_delta_y = (l_end_y - l_start_y) / type_tan::make_s(l_step_count);
+                assert(l_delta_y != type_tan::make_s(num(0)));
 
                 let l_start_double_y = num(-1);
                 let l_end_double_y = num(1);
@@ -208,9 +210,6 @@ func_(fixed_atan2_test)
 
 void main()
 {
-    let l_x = num(1);
-    let l_y = num(2);
-    let l_value = l_x / l_y;
     fixed_operation_test<fixed<16, Int32>>();
     fixed_operation_test<fixed<24, Int32>>();
     fixed_cos_test();

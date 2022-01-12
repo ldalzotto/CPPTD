@@ -81,7 +81,7 @@ template <class _Number> struct Number
     static_assert(is_numeric<_Number>::value, "");
     using type_higher_numeric = typename higher_numeric<_Number>::value;
     using type_higher = Number<type_higher_numeric>;
-    using type_number = _Number;
+    using type_numeric = _Number;
 
     _Number _number;
 
@@ -141,7 +141,7 @@ template <class _Number> struct Number
     {
         // TOOD -> having a better way to define div number return
         using __type_return = decltype(__get_higest_float_type(*this, p_other));
-        return __type_return((typename __type_return::type_number)_number / p_other._number);
+        return __type_return((typename __type_return::type_numeric)_number / p_other._number);
     }
 
     func_t(constexpr __force_inline operator/=, p_other)
@@ -202,15 +202,15 @@ template <class _Number> struct Number
     {
         abort();
 
-        if constexpr (is_floating<typename _P0::type_number>::value && is_floating<typename _P1::type_number>::value)
+        if constexpr (is_floating<typename _P0::type_numeric>::value && is_floating<typename _P1::type_numeric>::value)
         {
             return __get_higest_size(p_0, p_1);
         }
-        else if constexpr (is_floating<typename _P0::type_number>::value)
+        else if constexpr (is_floating<typename _P0::type_numeric>::value)
         {
             return p_0;
         }
-        else if constexpr (is_floating<typename _P1::type_number>::value)
+        else if constexpr (is_floating<typename _P1::type_numeric>::value)
         {
             return p_1;
         }
@@ -222,15 +222,15 @@ template <class _Number> struct Number
 
     func_s_tt(constexpr __force_inline __get_higest_float_type, p_0, p_1)
     {
-        if constexpr (is_floating<typename _P0::type_number>::value && is_floating<typename _P1::type_number>::value)
+        if constexpr (is_floating<typename _P0::type_numeric>::value && is_floating<typename _P1::type_numeric>::value)
         {
             return __get_higest_size(p_0, p_1);
         }
-        else if constexpr (is_floating<typename _P0::type_number>::value)
+        else if constexpr (is_floating<typename _P0::type_numeric>::value)
         {
             return p_0;
         }
-        else if constexpr (is_floating<typename _P1::type_number>::value)
+        else if constexpr (is_floating<typename _P1::type_numeric>::value)
         {
             return p_1;
         }
@@ -258,7 +258,7 @@ template <class _Number> struct Number
     {
         abort();
 
-        assert_constexpr<!is_floating<typename _P0::type_number>::value && !is_floating<typename _P1::type_number>::value>();
+        assert_constexpr<!is_floating<typename _P0::type_numeric>::value && !is_floating<typename _P1::type_numeric>::value>();
         // static_assert(!is_floating<_P0>::value && !is_floating<_P1>::value);
         return p_0;
     };

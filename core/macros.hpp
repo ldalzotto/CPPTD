@@ -13,6 +13,8 @@
 #define func_s_t(p_name, p_0) template <class _P0> static auto p_name(_P0 p_0)
 #define func_s_tt(p_name, p_0, p_1) template <class _P0, class _P1> static auto p_name(_P0 p_0, _P1 p_1)
 
+#define func_e_(p_name) constexpr auto p_name()
+
 #define func_wto_t(p_name, p_to, p_0)                                                                                                                                                                  \
     template <class _P0> auto __force_inline p_name(_P0 p_0)                                                                                                                                           \
     {                                                                                                                                                                                                  \

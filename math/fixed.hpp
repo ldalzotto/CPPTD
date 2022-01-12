@@ -7,6 +7,7 @@ template <i8 _FractionalPrecision, class _Num> struct fixed
     static_assert(_FractionalPrecision <= (sizeof(_Num) * 8));
 
     using type_higher_numeric = typename _Num::type_higher_numeric;
+    using type_numeric = typename _Num::type_numeric;
     _Num _number;
 
     func_s_(constexpr __force_inline scale)
